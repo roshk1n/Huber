@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     DB db = new DB(this);;
@@ -27,7 +28,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLog.setOnClickListener(this);
 
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -42,6 +42,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     intent.putExtra("name",username);
                     intent.putExtra("pas",pass);
                     startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this, "Username or password is incorrect!", Toast.LENGTH_SHORT).show();
                 }
                 db.close();
                 break;

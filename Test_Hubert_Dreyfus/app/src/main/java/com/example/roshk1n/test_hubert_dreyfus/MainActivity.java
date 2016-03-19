@@ -230,24 +230,26 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if(id== R.id.action_logout)
+        switch (item.getItemId())
         {
-            startActivity(new Intent(this,LoginActivity.class));
+            case R.id.action_settings:
+                return true;
+            case R.id.action_logout:
+                startActivity(new Intent(this,LoginActivity.class));
+                break;
+            case R.id.action_username:
+            case R.id.action_showResult:
+                intentforresult = new Intent(MainActivity.this,ActivityDraw.class);
+                intentforresult.putExtra("ScoreNovice",user.getValnovice());
+                intentforresult.putExtra("ScoreAdva_Beg",user.getValadvanced_beginer());
+                intentforresult.putExtra("ScoreCompetent",user.getValcompetent());
+                intentforresult.putExtra("ScoreProficient",user.getValproficient());
+                intentforresult.putExtra("ScoreExpert",user.getValexpert());
+                intentforresult.putExtra("Username", user.getUsername());
+                startActivity(intentforresult);
+                break;
         }
-        if(id==R.id.action_showResult)
-        {
-            intentforresult = new Intent(MainActivity.this,ActivityDraw.class);
-            intentforresult.putExtra("ScoreNovice",user.getValnovice());
-            intentforresult.putExtra("ScoreAdva_Beg",user.getValadvanced_beginer());
-            intentforresult.putExtra("ScoreCompetent",user.getValcompetent());
-            intentforresult.putExtra("ScoreProficient",user.getValproficient());
-            intentforresult.putExtra("ScoreExpert",user.getValexpert());
-            intentforresult.putExtra("Username", user.getUsername());
-            startActivity(intentforresult);
-        }
+
         return super.onOptionsItemSelected(item);
     }
     @SuppressWarnings("StatementWithEmptyBody")

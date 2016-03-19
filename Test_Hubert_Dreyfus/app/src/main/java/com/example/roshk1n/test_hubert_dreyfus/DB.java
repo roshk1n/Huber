@@ -94,7 +94,7 @@ public class DB {
         cv1.put(COLUMN_COMPETENT, us.getValcompetent());
         cv1.put(COLUMN_PROFICIENT, us.getValproficient());
         cv1.put(COLUMN_EXPERT, us.getValexpert());
-        mDB.update("tabUser",cv1,"username = ?",new String[] {"roshk1n"});
+        mDB.update("tabUser",cv1,"username = ?",new String[] {us.getUsername()});
     }
 
     public void inserUser(User user)
