@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     String username,pas;
     MenuItem menuItem;
     ListView listView;
+    FloatingActionButton fab;
     TextView tvWelcom;
     SimpleCursorAdapter simpleCursorAdapter;
     Cursor cursor;
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity
         user = db.getUser(user);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -256,6 +258,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         db = new DB(this);
         db.open();
+        fab.show();
         switch (item.getItemId())
         {
             case R.id.nav_novice:
