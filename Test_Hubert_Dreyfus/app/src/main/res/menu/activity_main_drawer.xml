@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_novice"
+            android:icon="@drawable/ic_star_outline_24dp"
+            android:title="@string/nav_notice" />
+        <item
+            android:id="@+id/nav_advanced_beginner"
+            android:icon="@drawable/ic_star_outline_24dp"
+            android:title="@string/nav_advanced_neginner" />
+        <item
+            android:id="@+id/nav_competent"
+            android:icon="@drawable/ic_star_half_24dp"
+            android:title="@string/nav_competent" />
+        <item
+            android:id="@+id/nav_proficient"
+            android:icon="@drawable/ic_star_half_24dp"
+            android:title="@string/nav_Proficient" />
+        <item
+            android:id="@+id/nav_expert"
+            android:icon="@drawable/ic_star_24dp"
+            android:title="@string/nav_expert" />
+
+    </group>
+
+    <item android:title="Communicate">
+
+    </item>
+    <item
+        android:id="@+id/nav_result"
+        android:icon="@drawable/ic_event_available_24dp"
+        android:title="@string/nav_Graphics" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_report_24dp"
+        android:title="@string/nav_about" />
+</menu>
