@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity
         {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("About");
-            adb.setMessage("Testing of Huber Dreyfus\nCreator Roshka Oleh PI-34."+"\n"+"Version:1.0 \n 2016");
+            adb.setMessage("Testing of Huber Dreyfus\nCreator Roshka Oleh PI-34."+"\n"+"Version:1.2 \n 2016");
             adb.setPositiveButton("OK", null);
             dialog = adb.create();
         }
