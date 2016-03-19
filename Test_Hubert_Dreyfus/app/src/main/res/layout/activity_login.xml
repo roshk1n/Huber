@@ -8,11 +8,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_gravity="center_vertical"
     tools:context="com.example.roshk1n.test_hubert_dreyfus.LoginActivity">
     <TextView
         android:layout_width="wrap_content"
         android:text="Username"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity=""/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,5 +47,4 @@
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content" />
-
 </LinearLayout>

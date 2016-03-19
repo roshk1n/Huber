@@ -3,6 +3,7 @@ package com.example.roshk1n.test_hubert_dreyfus;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,12 +43,12 @@ import com.example.roshk1n.test_hubert_dreyfus.fragments.FragmentProficient;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Dialog dialog;
-    public DB db;
-    TextView tvAbout;
+    public DB db = new DB(this);
     User user;
     String username,pas;
     MenuItem menuItem;
     ListView listView;
+    TextView tvWelcom;
     SimpleCursorAdapter simpleCursorAdapter;
     Cursor cursor;
     RadioButton rbMax,rbMid,rbMin;
@@ -55,24 +57,22 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tvWelcom = (TextView) findViewById(R.id.tvWelcom);
+        db.open();
         listView = (ListView) findViewById(R.id.listView);
         username=getIntent().getStringExtra("name");
         pas = getIntent().getStringExtra("pas");
         user = new User(username,pas);
-       // user=db.getUser(user);
+        user = db.getUser(user);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(listView.getChildCount()==0) {
-            tvAbout = (TextView) findViewById(R.id.tvAbout);
-            tvAbout.setText(R.string.tvAbout);
-        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String res="";
-
-                if(toolbar.getTitle()=="Novice") {
+                String res = "";
+                db.open();
+                if (toolbar.getTitle() == "Novice") {
                     user.setValnovice(0);
                     for (int i = 0; i < listView.getChildCount(); i++) {
                         rbMax = (RadioButton) listView.getChildAt(i).findViewById(R.id.rbMax);
@@ -89,9 +89,11 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                     res = String.valueOf(user.getValnovice());
+
+                    db.updateUser(user);
+                    user = db.getUser(user);
                 }
-                if(toolbar.getTitle()=="Advanced beginner")
-                {
+                if (toolbar.getTitle() == "Advanced beginner") {
                     user.setValadvanced_beginer(0);
                     for (int i = 0; i < listView.getChildCount(); i++) {
                         rbMax = (RadioButton) listView.getChildAt(i).findViewById(R.id.rbMax);
@@ -104,14 +106,15 @@ public class MainActivity extends AppCompatActivity
                             user.setValadvanced_beginer(user.getValadvanced_beginer() + 3);
                         }
                         if (rbMin.isChecked()) {
-                            user.setValadvanced_beginer(user.getValadvanced_beginer()  + 2);
+                            user.setValadvanced_beginer(user.getValadvanced_beginer() + 2);
                         }
                     }
+                    db.updateUser(user);
+                    user = db.getUser(user);
                     res = String.valueOf(user.getValadvanced_beginer());
 
                 }
-                if(toolbar.getTitle()=="Competent")
-                {
+                if (toolbar.getTitle() == "Competent") {
                     user.setValcompetent(0);
                     for (int i = 0; i < listView.getChildCount(); i++) {
                         rbMax = (RadioButton) listView.getChildAt(i).findViewById(R.id.rbMax);
@@ -127,10 +130,11 @@ public class MainActivity extends AppCompatActivity
                             user.setValcompetent(user.getValcompetent() + 2);
                         }
                     }
+                    db.updateUser(user);
+                    user = db.getUser(user);
                     res = String.valueOf(user.getValcompetent());
                 }
-                if(toolbar.getTitle()=="Proficient")
-                {
+                if (toolbar.getTitle() == "Proficient") {
                     user.setValproficient(0);
                     for (int i = 0; i < listView.getChildCount(); i++) {
                         rbMax = (RadioButton) listView.getChildAt(i).findViewById(R.id.rbMax);
@@ -143,13 +147,14 @@ public class MainActivity extends AppCompatActivity
                             user.setValproficient(user.getValproficient() + 3);
                         }
                         if (rbMin.isChecked()) {
-                            user.setValproficient(user.getValproficient()  + 2);
+                            user.setValproficient(user.getValproficient() + 2);
                         }
                     }
+                    db.updateUser(user);
+                    user = db.getUser(user);
                     res = String.valueOf(user.getValproficient());
                 }
-                if(toolbar.getTitle()=="Expert")
-                {
+                if (toolbar.getTitle() == "Expert") {
                     user.setValexpert(0);
                     for (int i = 0; i < listView.getChildCount(); i++) {
                         rbMax = (RadioButton) listView.getChildAt(i).findViewById(R.id.rbMax);
@@ -165,18 +170,14 @@ public class MainActivity extends AppCompatActivity
                             user.setValexpert(user.getValexpert() + 2);
                         }
                     }
+                    db.updateUser(user);
+                    user = db.getUser(user);
                     res = String.valueOf(user.getValexpert());
                 }
-                Snackbar.make(view, "Test Completed. Score:"+res, Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Test Completed. Score:" + res, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                db.close();
 
-                intentforresult = new Intent(MainActivity.this,ActivityDraw.class);
-                intentforresult.putExtra("ScoreNovice",user.getValnovice());
-                intentforresult.putExtra("ScoreAdva_Beg",user.getValadvanced_beginer());
-                intentforresult.putExtra("ScoreCompetent",user.getValcompetent());
-                intentforresult.putExtra("ScoreProficient",user.getValproficient());
-                intentforresult.putExtra("ScoreExpert",user.getValexpert());
-                intentforresult.putExtra("Username", user.getUsername());
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -236,42 +237,77 @@ public class MainActivity extends AppCompatActivity
         }
         if(id==R.id.action_showResult)
         {
+            intentforresult = new Intent(MainActivity.this,ActivityDraw.class);
+            intentforresult.putExtra("ScoreNovice",user.getValnovice());
+            intentforresult.putExtra("ScoreAdva_Beg",user.getValadvanced_beginer());
+            intentforresult.putExtra("ScoreCompetent",user.getValcompetent());
+            intentforresult.putExtra("ScoreProficient",user.getValproficient());
+            intentforresult.putExtra("ScoreExpert",user.getValexpert());
+            intentforresult.putExtra("Username", user.getUsername());
             startActivity(intentforresult);
         }
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
+        tvWelcom.setText("");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         db = new DB(this);
         db.open();
-
-        if (id == R.id.nav_expert) {
-            cursor = db.getAllData("Expert");
-            toolbar.setTitle("Expert");
-        } else if (id == R.id.nav_novice) {
-            toolbar.setTitle("Novice");
-            cursor = db.getAllData("Novice");
-        } else if (id == R.id.nav_advanced_beginner) {
-            cursor = db.getAllData("Advanced beginner");
-            toolbar.setTitle("Advanced beginner");
-        } else if (id == R.id.nav_competent) {
-            cursor = db.getAllData("Competent");
-            toolbar.setTitle("Competent");
-        } else if (id == R.id.nav_proficient) {
-            cursor = db.getAllData("Proficient");
-            toolbar.setTitle("Proficient");
-        } else if(id==R.id.nav_about){
-            showDialog(1);
-        } else if(id==R.id.nav_result)
+        switch (item.getItemId())
         {
-
+            case R.id.nav_novice:
+                if(user.getValnovice()!=0)
+                {
+                    Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
+                }
+                toolbar.setTitle("Novice");
+                cursor = db.getAllData("Novice");
+                break;
+            case R.id.nav_advanced_beginner:
+                if(user.getValadvanced_beginer()!=0)
+                {
+                    Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
+                }
+                cursor = db.getAllData("Advanced beginner");
+                toolbar.setTitle("Advanced beginner");
+                break;
+            case R.id.nav_competent:
+                if(user.getValcompetent()!=0)
+                {
+                    Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
+                }
+                cursor = db.getAllData("Competent");
+                toolbar.setTitle("Competent");
+                break;
+            case R.id.nav_proficient:
+                if(user.getValproficient()!=0)
+                {
+                    Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
+                }
+                cursor = db.getAllData("Proficient");
+                toolbar.setTitle("Proficient");
+                break;
+            case R.id.nav_expert:
+                if(user.getValexpert()!=0)
+                {
+                    Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
+                }
+                cursor = db.getAllData("Expert");
+                toolbar.setTitle("Expert");
+                break;
+            case R.id.nav_about:
+                showDialog(1);
+                break;
+            case R.id.nav_help:
+                startActivity(new Intent(MainActivity.this, help_activity.class));
         }
-        startManagingCursor(cursor);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            startManagingCursor(cursor);
+       }
+
         String[] from = new String[]{DB.COLUMN_TEXT,DB.COLUMN_FIRST_ANSWER,DB.COLUMN_SECOND_ANSWER,DB.COLUMN_THIRD_ANSWER};
         int[] to ={R.id.tvQue,R.id.rbMax,R.id.rbMid,R.id.rbMin};
 

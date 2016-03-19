@@ -42,7 +42,7 @@ public class DB {
 
     private DBHelper mDBHelper;
 
-    private SQLiteDatabase mDB;
+    public SQLiteDatabase mDB;
 
     public DB(Context ctx)
     {
@@ -62,37 +62,38 @@ public class DB {
         }
     }
 
-    public User getUser(User user)
+    public User getUser(User us)
     {
+
         String query = "select * from "+DB_TABLEUSR;
         Cursor cursor = mDB.rawQuery(query,null);
 
         cursor.moveToFirst();
         do {
-            if(user.getUsername().equals(cursor.getString(0).toString())&&user.getPassword().equals(cursor.getString(1).toString())) {
-                user.setValnovice(cursor.getInt(2));
-                user.setValadvanced_beginer(cursor.getInt(3));
-                user.setValcompetent(cursor.getInt(4));
-                user.setValproficient(cursor.getInt(5));
-                user.setValexpert(cursor.getInt(6));
+            if(us.getUsername().equals(cursor.getString(1).toString())&&us.getPassword().equals(cursor.getString(2).toString())) {
+                us.setValnovice(cursor.getInt(3));
+                us.setValadvanced_beginer(cursor.getInt(4));
+                us.setValcompetent(cursor.getInt(5));
+                us.setValproficient(cursor.getInt(6));
+                us.setValexpert(cursor.getInt(7));
             }
             break;
         }
         while (cursor.moveToNext());
-
-        return user;
+        cursor.close();
+        return us;
     }
 
-    public void updateUser(User user)
+    public void updateUser(User us)
     {
         ContentValues cv1= new ContentValues();
-        cv1.put(COLUMN_USERNAME,user.getUsername());
-        cv1.put(COLUMN_PASSWORD,user.getPassword());
-        cv1.put(COLUMN_NOVICE,user.getValnovice());
-        cv1.put(COLUMN_ADVANCED,user.getValadvanced_beginer());
-        cv1.put(COLUMN_COMPETENT, user.getValcompetent());
-        cv1.put(COLUMN_PROFICIENT, user.getValproficient());
-        cv1.put(COLUMN_EXPERT, user.getValexpert());
+        cv1.put(COLUMN_USERNAME,us.getUsername());
+        cv1.put(COLUMN_PASSWORD,us.getPassword());
+        cv1.put(COLUMN_NOVICE,us.getValnovice());
+        cv1.put(COLUMN_ADVANCED,us.getValadvanced_beginer());
+        cv1.put(COLUMN_COMPETENT, us.getValcompetent());
+        cv1.put(COLUMN_PROFICIENT, us.getValproficient());
+        cv1.put(COLUMN_EXPERT, us.getValexpert());
         mDB.update("tabUser",cv1,"username = ?",new String[] {"roshk1n"});
     }
 
@@ -117,11 +118,6 @@ public class DB {
         Cursor cursor = mDB.rawQuery(query,null);
 
         cursor.moveToFirst();
-        Log.d(TAG, "w");
-        Log.d(TAG, cursor.getString(0).toString());
-        Log.d(TAG,cursor.getString(1).toString());
-        Log.d(TAG,username);
-        Log.d(TAG,pas);
         do {
             if(username.equals(cursor.getString(0).toString())&&pas.equals(cursor.getString(1).toString())) {
                 check = true;

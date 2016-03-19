@@ -1,9 +1,12 @@
 package com.example.roshk1n.test_hubert_dreyfus;
 
+import android.database.Cursor;
+
 /**
  * Created by roshk1n on 13.03.16.
  */
 public class User {
+    public DB db;
     private String username,password;
     private int valnovice,valadvanced_beginer,valcompetent,valproficient,valexpert;
     public User(String username, String password)

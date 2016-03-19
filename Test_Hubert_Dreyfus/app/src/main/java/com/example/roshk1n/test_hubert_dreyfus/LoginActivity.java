@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    DB db;
+    DB db = new DB(this);;
     Button btnLog;
     EditText etPassword, etUserName;
     TextView tvregisterLink;
@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLog = (Button) findViewById(R.id.btnLogin);
         tvregisterLink = (TextView) findViewById(R.id.tvRegisterLink);
         btnLog.setOnClickListener(this);
-        db = new DB(this);
+
     }
 
     @Override
@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
     public void goRegister(View view) {
         startActivity(new Intent(this,RegisterActivity.class));
 

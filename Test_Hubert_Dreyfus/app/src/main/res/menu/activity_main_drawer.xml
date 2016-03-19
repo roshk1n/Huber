@@ -29,9 +29,9 @@
 
     </item>
     <item
-        android:id="@+id/nav_result"
-        android:icon="@drawable/ic_event_available_24dp"
-        android:title="@string/nav_Graphics" />
+        android:id="@+id/nav_help"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/nav_help" />
     <item
         android:id="@+id/nav_about"
         android:icon="@drawable/ic_report_24dp"
