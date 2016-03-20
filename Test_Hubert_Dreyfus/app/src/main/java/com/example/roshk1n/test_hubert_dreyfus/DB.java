@@ -76,8 +76,8 @@ public class DB {
                 us.setValcompetent(cursor.getInt(5));
                 us.setValproficient(cursor.getInt(6));
                 us.setValexpert(cursor.getInt(7));
+                break;
             }
-            break;
         }
         while (cursor.moveToNext());
         cursor.close();

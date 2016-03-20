@@ -33,11 +33,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.roshk1n.test_hubert_dreyfus.fragments.FragmentAdvancedBeginner;
-import com.example.roshk1n.test_hubert_dreyfus.fragments.FragmentCompetent;
-import com.example.roshk1n.test_hubert_dreyfus.fragments.FragmentExpert;
-import com.example.roshk1n.test_hubert_dreyfus.fragments.FragmentNovice;
-import com.example.roshk1n.test_hubert_dreyfus.fragments.FragmentProficient;
 
 
 public class MainActivity extends AppCompatActivity
