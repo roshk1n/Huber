@@ -6,13 +6,16 @@ import android.app.FragmentTransaction;
 import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.gesture.Prediction;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -38,22 +41,26 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Dialog dialog;
+    SharedPreferences sp;
     public DB db = new DB(this);
     User user;
     String username,pas;
     MenuItem menuItem;
     ListView listView;
     FloatingActionButton fab;
-    TextView tvWelcom;
+    TextView tvWelcome;
     SimpleCursorAdapter simpleCursorAdapter;
     Cursor cursor;
     RadioButton rbMax,rbMid,rbMin;
     Intent intentforresult;
+    boolean notif;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tvWelcom = (TextView) findViewById(R.id.tvWelcom);
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        tvWelcome = (TextView) findViewById(R.id.tvWelcome);
         db.open();
         listView = (ListView) findViewById(R.id.listView);
         username=getIntent().getStringExtra("name");
@@ -198,6 +205,13 @@ public class MainActivity extends AppCompatActivity
         }
         return dialog;
     }
+    protected void onResume(){
+
+        //        String address = sp.getString("address","");
+//        String text = "Notification are " +((notif ) ? "enable, address = " +address : "disabled");
+    //    tvWelcome.setText(text);
+        super.onResume();
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -227,14 +241,12 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         switch (item.getItemId())
         {
-            case R.id.action_settings:
-                return true;
             case R.id.action_logout:
                 startActivity(new Intent(this,LoginActivity.class));
                 break;
             case R.id.action_username:
             case R.id.action_showResult:
-                intentforresult = new Intent(MainActivity.this,ActivityDraw.class);
+                intentforresult = new Intent(MainActivity.this,ResultActivity.class);
                 intentforresult.putExtra("ScoreNovice",user.getValnovice());
                 intentforresult.putExtra("ScoreAdva_Beg",user.getValadvanced_beginer());
                 intentforresult.putExtra("ScoreCompetent",user.getValcompetent());
@@ -242,6 +254,9 @@ public class MainActivity extends AppCompatActivity
                 intentforresult.putExtra("ScoreExpert",user.getValexpert());
                 intentforresult.putExtra("Username", user.getUsername());
                 startActivity(intentforresult);
+                break;
+            case R.id.action_settings:
+                startActivity(new Intent(this,PrefActivity.class));
                 break;
         }
 
@@ -251,15 +266,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        tvWelcom.setText("");
+        tvWelcome.setText("");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         db = new DB(this);
         db.open();
         fab.show();
+        notif = sp.getBoolean("notif", false);
         switch (item.getItemId())
         {
+
             case R.id.nav_novice:
-                if(user.getValnovice()!=0)
+                if(user.getValnovice()!=0 && notif==true)
                 {
                     Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
                 }
@@ -267,7 +284,7 @@ public class MainActivity extends AppCompatActivity
                 cursor = db.getAllData("Novice");
                 break;
             case R.id.nav_advanced_beginner:
-                if(user.getValadvanced_beginer()!=0)
+                if(user.getValadvanced_beginer()!=0&&notif)
                 {
                     Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
                 }
@@ -275,7 +292,7 @@ public class MainActivity extends AppCompatActivity
                 toolbar.setTitle("Advanced beginner");
                 break;
             case R.id.nav_competent:
-                if(user.getValcompetent()!=0)
+                if(user.getValcompetent()!=0&&notif)
                 {
                     Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
                 }
@@ -283,7 +300,7 @@ public class MainActivity extends AppCompatActivity
                 toolbar.setTitle("Competent");
                 break;
             case R.id.nav_proficient:
-                if(user.getValproficient()!=0)
+                if(user.getValproficient()!=0&&notif)
                 {
                     Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
                 }
@@ -291,7 +308,7 @@ public class MainActivity extends AppCompatActivity
                 toolbar.setTitle("Proficient");
                 break;
             case R.id.nav_expert:
-                if(user.getValexpert()!=0)
+                if(user.getValexpert()!=0&&notif)
                 {
                     Toast.makeText(this,"You have completed this level. See results or start again",Toast.LENGTH_LONG).show();
                 }

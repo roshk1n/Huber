@@ -74,7 +74,7 @@ public class ActivityDraw extends AppCompatActivity  {
             for(float i=300+valuecoast;i<heigth-500;i+=valuecoast)//будуємо вісь Y + підписи
             {
                 if(count>4)
-                {
+                    {
                     pCoast.setStrokeWidth(10);
                     canvas.drawLine(90, i, 150, i, pCoast);
                     canvas.drawText(String.valueOf(val), 40, i-10, pCoast);

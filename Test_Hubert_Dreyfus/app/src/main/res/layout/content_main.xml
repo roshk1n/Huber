@@ -21,22 +21,19 @@
         android:layout_gravity="left|top">
 
     </ListView>
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tvWelcom"
+                android:id="@+id/tvWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Welcom"
+                android:text="Welcome"
                 android:paddingBottom="100dp"
                 android:textColor="@color/levelLabel"
                 android:textSize="80sp" />
         </FrameLayout>
-
-
     </LinearLayout>
 </LinearLayout>
